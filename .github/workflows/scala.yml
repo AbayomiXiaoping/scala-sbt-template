@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ARTIFACTORY_SYS_USER: ${{ secrets.ARTIFACTORY_SYS_USER }}
-      ARTIFACTORY_SYS_PASSWORD: ${{ secrets.ARTIFACTORY_SYS_USER }}
+      ARTIFACTORY_SYS_PASSWORD: ${{ secrets.ARTIFACTORY_SYS_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v2

@@ -6,7 +6,7 @@ enablePlugins(UniversalPlugin)
 * Credential and other Environment Configuration
  */
 
-val systemUser: String = System.getenv("ARTIFACTORY_SYS_USER  ")
+val systemUser: String = System.getenv("ARTIFACTORY_SYS_USER")
 val systemPassword: String = System.getenv("ARTIFACTORY_SYS_PASSWORD")
 
 /*
