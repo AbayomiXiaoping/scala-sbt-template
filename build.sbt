@@ -1,18 +1,24 @@
 import com.typesafe.sbt.SbtNativePackager.autoImport.NativePackagerHelper._
 
 enablePlugins(UniversalPlugin)
-enablePlugins(UniversalDeployPlugin)
 
+/*
+* Credential and other Environment Configuration
+ */
+
+val systemUser: String = sys.env.getOrElse("ARTIFACTORY_SYS_USER", null)
+val systemPassword: String = sys.env.getOrElse("ARTIFACTORY_SYS_PASSWORD", null)
+
+/*
+* Project Configuration
+ */
+
+organization := "com.github.suriyakrishna"
 name := "scala-sbt-template"
-
-version := "2.0.0"
-
+version := "1.0.0"
 scalaVersion := "2.11.12"
-
 maintainer := "suriya.kishan@live.com"
-
 packageSummary := "Scala SBT Template"
-
 packageDescription :=
   """Scala SBT Template"""
 
@@ -22,14 +28,14 @@ packageDescription :=
 
 assemblyJarName in assembly := s"${name.value}.jar"
 
-artifact in(Compile, assembly) := {
-  val art = (artifact in(Compile, assembly)).value
-  art.withClassifier(some("assembly")) // This can be customized
-}
+/*
+* Project dependency Configuration
+ */
 
-addArtifact(artifact in(Compile, assembly), assembly)
+resolvers ++= Seq(
+  DefaultMavenRepository
+)
 
-// Project Library Dependencies configuration
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-json" % "2.7.4"
 )
@@ -48,3 +54,26 @@ packageName in Universal := packageName.value
 mappings in Universal ++= directory("bin")
 mappings in Universal ++= directory("conf")
 //mappings in Universal += (assembly in Compile).value -> s"lib/${name.value}.jar"
+
+/* *
+* Publish Configuration
+ */
+
+artifact in(Compile, assembly) := {
+  val art = (artifact in(Compile, assembly)).value
+  art.withClassifier(some("assembly")) // This can be customized
+}
+
+artifact in(Universal, packageBin in Universal) := {
+  val art = (artifact in(Universal, packageBin in Universal)).value
+  art.withClassifier(Some("zip"))
+  art.withExtension("zip").withType("zip")
+}
+
+addArtifact(artifact in(Compile, assembly), assembly)
+addArtifact(artifact in(Universal, packageBin in Universal), packageBin in Universal)
+
+publishMavenStyle := true
+publishConfiguration := publishConfiguration.value.withOverwrite(true)
+publishTo := Some("Artifactory Realm" at "https://suriyakrishna.jfrog.io/artifactory/package-generic-local/")
+credentials += Credentials("Artifactory Realm", "suriyakrishna.jfrog.io", systemUser, systemPassword)
