@@ -6,13 +6,12 @@ enablePlugins(UniversalPlugin)
 * Credential and other Environment Configuration
  */
 
-val systemUser: String = System.getenv("ARTIFACTORY_SYS_USER")
-val systemPassword: String = System.getenv("ARTIFACTORY_SYS_PASSWORD")
+lazy val systemUser: String = System.getenv("ARTIFACTORY_SYS_USER")
+lazy val systemPassword: String = System.getenv("ARTIFACTORY_SYS_PASSWORD")
 
 /*
 * Project Configuration
  */
-
 organization := "com.github.suriyakrishna"
 name := "scala-sbt-template"
 version := "1.0.0"
