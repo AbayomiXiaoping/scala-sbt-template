@@ -6,8 +6,9 @@ enablePlugins(UniversalPlugin)
 * Credential and other Environment Configuration
  */
 
-lazy val systemUser: String = System.getenv("ARTIFACTORY_SYS_USER")
-lazy val systemPassword: String = System.getenv("ARTIFACTORY_SYS_PASSWORD")
+lazy val systemUser: String = sys.env("ARTIFACTORY_SYS_USER")
+lazy val systemPassword: String = sys.env("ARTIFACTORY_SYS_PASSWORD")
+lazy val overwriteArtifact: Boolean = sys.env.getOrElse("ARTIFACTORY_OVERWRITE", "false").toBoolean
 
 /*
 * Project Configuration
@@ -74,5 +75,6 @@ addArtifact(artifact in(Universal, packageBin in Universal), packageBin in Unive
 
 publishMavenStyle := true
 publishConfiguration := publishConfiguration.value.withOverwrite(true)
+publishLocalConfiguration := publishLocalConfiguration.value.withOverwrite(true)
 publishTo := Some("Artifactory Realm" at "https://suriyakrishna.jfrog.io/artifactory/package-generic-local/")
 credentials += Credentials("Artifactory Realm", "suriyakrishna.jfrog.io", systemUser, systemPassword)
