@@ -13,7 +13,8 @@ Scala SBT template
 - [x] Sbt Publish Configuration for JFrog Repository.
 - [x] Sbt GitHub Actions (Scala CI).
 - [x] Sbt Scala Format Plugin Configuration.
-- [ ] Sbt Jacoco Plugin Configuration.
+- [x] Sbt Jacoco Plugin Configuration.
+- [x] Sbt Custom Publish Configuration.
 - [ ] Sbt SonarQube Plugin Configuration.
 - [ ] Sbt Release Plugin Configuration.
 
