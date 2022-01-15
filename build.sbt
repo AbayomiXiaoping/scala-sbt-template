@@ -35,7 +35,11 @@ assemblyJarName in assembly := s"${name.value}.jar"
 
 resolvers ++= Seq(DefaultMavenRepository)
 
-libraryDependencies ++= Seq("com.typesafe.play" %% "play-json" % "2.7.4")
+libraryDependencies ++= Seq(
+  "com.typesafe.play" %% "play-json" % "2.7.4",
+  "org.scalatest" %% "scalatest" % "3.2.2" % Test,
+  "org.mockito" %% "mockito-scala-scalatest" % "1.16.37" % Test
+)
 
 /* *
  * Universal Plugin Configuration
