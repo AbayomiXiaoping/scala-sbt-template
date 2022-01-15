@@ -3,15 +3,16 @@ import com.typesafe.sbt.SbtNativePackager.autoImport.NativePackagerHelper._
 enablePlugins(UniversalPlugin)
 
 /*
-* Credential and other Environment Configuration
+ * Credential and other Environment Configuration
  */
 
 lazy val systemUser: String = sys.env("ARTIFACTORY_SYS_USER")
 lazy val systemPassword: String = sys.env("ARTIFACTORY_SYS_PASSWORD")
-lazy val overwriteArtifact: Boolean = sys.env.getOrElse("ARTIFACTORY_OVERWRITE", "false").toBoolean
+lazy val overwriteArtifact: Boolean =
+  sys.env.getOrElse("ARTIFACTORY_OVERWRITE", "false").toBoolean
 
 /*
-* Project Configuration
+ * Project Configuration
  */
 organization := "com.github.suriyakrishna"
 name := "scala-sbt-template"
@@ -23,25 +24,21 @@ packageDescription :=
   """Scala SBT Template"""
 
 /*
-* Assembly Plugin Configuration
+ * Assembly Plugin Configuration
  */
 
 assemblyJarName in assembly := s"${name.value}.jar"
 
 /*
-* Project dependency Configuration
+ * Project dependency Configuration
  */
 
-resolvers ++= Seq(
-  DefaultMavenRepository
-)
+resolvers ++= Seq(DefaultMavenRepository)
 
-libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play-json" % "2.7.4"
-)
+libraryDependencies ++= Seq("com.typesafe.play" %% "play-json" % "2.7.4")
 
 /* *
-* Universal Plugin Configuration
+ * Universal Plugin Configuration
  */
 
 // Configure Universal Name
@@ -56,25 +53,35 @@ mappings in Universal ++= directory("conf")
 //mappings in Universal += (assembly in Compile).value -> s"lib/${name.value}.jar"
 
 /* *
-* Publish Configuration
+ * Publish Configuration
  */
 
-artifact in(Compile, assembly) := {
-  val art = (artifact in(Compile, assembly)).value
+artifact in (Compile, assembly) := {
+  val art = (artifact in (Compile, assembly)).value
   art.withClassifier(some("assembly")) // This can be customized
 }
 
-artifact in(Universal, packageBin in Universal) := {
-  val art = (artifact in(Universal, packageBin in Universal)).value
+artifact in (Universal, packageBin in Universal) := {
+  val art = (artifact in (Universal, packageBin in Universal)).value
   art.withClassifier(Some("zip"))
   art.withExtension("zip").withType("zip")
 }
 
-addArtifact(artifact in(Compile, assembly), assembly)
-addArtifact(artifact in(Universal, packageBin in Universal), packageBin in Universal)
+addArtifact(artifact in (Compile, assembly), assembly)
+addArtifact(
+  artifact in (Universal, packageBin in Universal),
+  packageBin in Universal
+)
 
 publishMavenStyle := true
 publishConfiguration := publishConfiguration.value.withOverwrite(true)
 publishLocalConfiguration := publishLocalConfiguration.value.withOverwrite(true)
-publishTo := Some("Artifactory Realm" at "https://suriyakrishna.jfrog.io/artifactory/package-generic-local/")
-credentials += Credentials("Artifactory Realm", "suriyakrishna.jfrog.io", systemUser, systemPassword)
+publishTo := Some(
+  "Artifactory Realm" at "https://suriyakrishna.jfrog.io/artifactory/package-generic-local/"
+)
+credentials += Credentials(
+  "Artifactory Realm",
+  "suriyakrishna.jfrog.io",
+  systemUser,
+  systemPassword
+)
