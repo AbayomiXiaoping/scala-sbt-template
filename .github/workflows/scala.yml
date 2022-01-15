@@ -22,6 +22,6 @@ jobs:
           java-version: '8'
           distribution: 'adopt'
       - name: SBT Validate Code Formatting
-          run: sbt clean scalafmtCheckAll
+        run: sbt clean scalafmtCheckAll
       - name: SBT Publish
         run: sbt publish
