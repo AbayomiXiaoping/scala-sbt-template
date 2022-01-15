@@ -9,8 +9,17 @@ class MyApplicationTest extends AnyFunSuite with BeforeAndAfterAll {
     assertResult(5)(MyApplication.sumNums(2, 3))
   }
 
-  test("Should be able to pass more than 2 number to sumNums Method") {}
-  assertResult(14)(MyApplication.sumNums(2, 3, 4, 5))
+  test("printColor with Red should print Color is Red") {
+    MyApplication.printColor("Red")
+  }
+
+  test("printColor with Blue should print Color is Blue") {
+    MyApplication.printColor("BLUE")
+  }
+
+  test("printColor with Green should print Color not defined") {
+    MyApplication.printColor("Green")
+  }
 
   test("main method is executable") {
     MyApplication.main(Array.empty)
