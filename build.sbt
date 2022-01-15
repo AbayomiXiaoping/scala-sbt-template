@@ -16,12 +16,17 @@ lazy val overwriteArtifact: Boolean =
  */
 organization := "com.github.suriyakrishna"
 name := "scala-sbt-template"
-version := "1.0.0"
+version := "1.0.0.RELEASE"
 scalaVersion := "2.11.12"
 maintainer := "suriya.kishan@live.com"
 packageSummary := "Scala SBT Template"
 packageDescription :=
   """Scala SBT Template"""
+
+homepage := Some(url("https://github.com/suriyakrishna/scala-sbt-template"))
+licenses := Seq(
+  "GNU-gpl-3.0" -> url("https://www.gnu.org/licenses/gpl-3.0.en.html")
+)
 
 /*
  * Assembly Plugin Configuration
@@ -35,7 +40,28 @@ assemblyJarName in assembly := s"${name.value}.jar"
 
 resolvers ++= Seq(DefaultMavenRepository)
 
-libraryDependencies ++= Seq("com.typesafe.play" %% "play-json" % "2.7.4")
+libraryDependencies ++= Seq(
+  "com.typesafe.play" %% "play-json" % "2.7.4",
+  "org.scalatest" %% "scalatest" % "3.2.2" % Test,
+  "org.mockito" %% "mockito-scala-scalatest" % "1.16.37" % Test
+)
+
+/* *
+ * Jacoco Plugin Threshold Configuration
+ */
+
+jacocoReportSettings := JacocoReportSettings()
+  .withThresholds(
+    JacocoThresholds(
+      instruction = 80,
+      method = 100,
+      branch = 100,
+      complexity = 100,
+      line = 90,
+      clazz = 100
+    )
+  )
+  .withTitle(s"${name.value} Jacoco Test Report")
 
 /* *
  * Universal Plugin Configuration
@@ -50,6 +76,9 @@ packageName in Universal := packageName.value
 // Add files to be in final Universal Package
 mappings in Universal ++= directory("bin")
 mappings in Universal ++= directory("conf")
+mappings in Universal ++= directory(jacocoReportDirectory.value).map(a =>
+  (a._1, s"jacoco/${a._2}")
+)
 //mappings in Universal += (assembly in Compile).value -> s"lib/${name.value}.jar"
 
 /* *
@@ -85,3 +114,41 @@ credentials += Credentials(
   systemUser,
   systemPassword
 )
+
+pomExtra := {
+  <developers>{
+    Seq(("suriyakrishna", "Suriya Krishna Mohan")).map { case (id, name) =>
+      <developer>
+        <id>{id}</id>
+        <name>{name}</name>
+        <url>https://github.com/{id}</url>
+      </developer>
+    }
+  }</developers>
+}
+
+/*
+ * My Custom Publish Tasks
+ */
+
+lazy val customPublishLocal = taskKey[Unit](
+  "My Customized Publish Local Command with clean, scalafmt Checks, and Jacoco Report"
+)
+
+lazy val customPublish = taskKey[Unit](
+  "My Customized Publish Command with clean, scalafmt Checks, and Jacoco Report"
+)
+
+lazy val myPublish: TaskKey[Unit] => Def.Initialize[Task[Unit]] = {
+  publishTask =>
+    {
+      (publishTask
+        dependsOn (Test / jacoco)
+        dependsOn (IntegrationTest / scalafmtSbtCheck)
+        dependsOn (IntegrationTest / scalafmtCheckAll)
+        dependsOn clean)
+    }
+}
+
+customPublishLocal := myPublish(publishLocal).value
+customPublish := myPublish(publish).value

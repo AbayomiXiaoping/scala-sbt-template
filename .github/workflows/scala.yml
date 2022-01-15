@@ -25,5 +25,7 @@ jobs:
         run: sbt clean scalafmtSbtCheck
       - name: 'SBT Validate .scala Formatting'
         run: sbt scalafmtCheckAll
+      - name: 'SBT Jacoco Coverage'
+        run: sbt jacoco
       - name: 'SBT Publish'
         run: sbt publish
