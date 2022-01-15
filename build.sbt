@@ -71,6 +71,9 @@ packageName in Universal := packageName.value
 // Add files to be in final Universal Package
 mappings in Universal ++= directory("bin")
 mappings in Universal ++= directory("conf")
+mappings in Universal ++= directory(jacocoReportDirectory.value).map(a =>
+  (a._1, s"jacoco/${a._2}")
+)
 //mappings in Universal += (assembly in Compile).value -> s"lib/${name.value}.jar"
 
 /* *
@@ -106,3 +109,29 @@ credentials += Credentials(
   systemUser,
   systemPassword
 )
+
+/*
+ * My Custom Publish Tasks
+ */
+
+lazy val customPublishLocal = taskKey[Unit](
+  "My Customized Publish Local Command with clean, scalafmt Checks, and Jacoco Report"
+)
+
+lazy val customPublish = taskKey[Unit](
+  "My Customized Publish Command with clean, scalafmt Checks, and Jacoco Report"
+)
+
+lazy val myPublish: TaskKey[Unit] => Def.Initialize[Task[Unit]] = {
+  publishTask =>
+    {
+      (publishTask
+        dependsOn (Test / jacoco)
+        dependsOn (IntegrationTest / scalafmtSbtCheck)
+        dependsOn (IntegrationTest / scalafmtCheckAll)
+        dependsOn clean)
+    }
+}
+
+customPublishLocal := myPublish(publishLocal).value
+customPublish := myPublish(publish).value
