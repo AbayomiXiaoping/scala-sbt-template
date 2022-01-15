@@ -23,6 +23,11 @@ packageSummary := "Scala SBT Template"
 packageDescription :=
   """Scala SBT Template"""
 
+homepage := Some(url("https://github.com/suriyakrishna/scala-sbt-template"))
+licenses := Seq(
+  "GNU-gpl-3.0" -> url("https://www.gnu.org/licenses/gpl-3.0.en.html")
+)
+
 /*
  * Assembly Plugin Configuration
  */
@@ -109,6 +114,18 @@ credentials += Credentials(
   systemUser,
   systemPassword
 )
+
+pomExtra := {
+  <developers>{
+    Seq(("suriyakrishna", "Suriya Krishna Mohan")).map { case (id, name) =>
+      <developer>
+        <id>{id}</id>
+        <name>{name}</name>
+        <url>https://github.com/{id}</url>
+      </developer>
+    }
+  }</developers>
+}
 
 /*
  * My Custom Publish Tasks
