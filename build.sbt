@@ -1,5 +1,8 @@
 import com.typesafe.sbt.SbtNativePackager.autoImport.NativePackagerHelper._
 
+import java.io.FileWriter
+import scala.sys.process._
+
 enablePlugins(UniversalPlugin)
 
 /*
@@ -92,8 +95,15 @@ artifact in (Compile, assembly) := {
 
 artifact in (Universal, packageBin in Universal) := {
   val art = (artifact in (Universal, packageBin in Universal)).value
-  art.withClassifier(Some("zip"))
   art.withExtension("zip").withType("zip")
+}
+
+artifact in writeGitMetadata := {
+  val art = (artifact in writeGitMetadata).value
+  art
+    .withClassifier(Some("build-metadata"))
+    .withExtension("log")
+    .withType("audit")
 }
 
 addArtifact(artifact in (Compile, assembly), assembly)
@@ -101,6 +111,7 @@ addArtifact(
   artifact in (Universal, packageBin in Universal),
   packageBin in Universal
 )
+addArtifact(artifact in writeGitMetadata, writeGitMetadata)
 
 publishMavenStyle := true
 publishConfiguration := publishConfiguration.value.withOverwrite(true)
@@ -152,3 +163,28 @@ lazy val myPublish: TaskKey[Unit] => Def.Initialize[Task[Unit]] = {
 
 customPublishLocal := myPublish(publishLocal).value
 customPublish := myPublish(publish).value
+
+/*
+ * Git Metadata for Build
+ */
+
+lazy val writeGitMetadata = taskKey[File]("Writes Git Metadata for Build")
+
+writeGitMetadata := {
+  val filePath = "build.git.metadata"
+  val buildTime = java.time.LocalDateTime.now()
+  val gitBranch = Process("git rev-parse --abbrev-ref HEAD").!!
+  val gitLog = Process("git log -n 1").!!
+  val fileWriter: FileWriter = new FileWriter(filePath)
+  val buildMetaFile = new File(filePath)
+  val decorator: String =
+    "##################################################################"
+  fileWriter.write(decorator)
+  fileWriter.write(s"\nBUILD USING GIT BRANCH: ${gitBranch}")
+  fileWriter.write(s"BUILD DATETIME: ${buildTime}\n")
+  fileWriter.write(decorator)
+  fileWriter.write("\n" + gitLog)
+  fileWriter.write(decorator)
+  fileWriter.close()
+  buildMetaFile
+}
