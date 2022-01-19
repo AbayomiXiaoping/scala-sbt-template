@@ -1,13 +1,13 @@
 # scala-sbt-template
 
-This repository provides files, directories, and build configuration for a Scala SBT project that can be completely inferred
-to create a new Scala SBT project with minimal changes.
+This repository provides files, directories, and build configuration for a Scala SBT project that can be completely
+inferred to create a new Scala SBT project with minimal changes.
 
 [![Scala CI](https://github.com/suriyakrishna/scala-sbt-template/actions/workflows/scala.yml/badge.svg)](https://github.com/suriyakrishna/scala-sbt-template/actions/workflows/scala.yml)
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
-[![Issues](https://img.shields.io/github/issues/suriyakrishna/scala-sbt-template)]()  
-[![Pull Requests](https://img.shields.io/github/issues-pr/suriyakrishna/scala-sbt-template)]()
-[![GitHub Releases](https://img.shields.io/github/v/release/suriyakrishna/scala-sbt-template?display_name=release)]()
+[![Issues](https://img.shields.io/github/issues/suriyakrishna/scala-sbt-template.svg)](https://github.com/suriyakrishna/scala-sbt-template/issues)
+[![Pull Requests](https://img.shields.io/github/issues-pr/suriyakrishna/scala-sbt-template)](https://github.com/suriyakrishna/scala-sbt-template/pulls)
+[![GitHub Releases](https://img.shields.io/github/v/release/suriyakrishna/scala-sbt-template)](https://github.com/suriyakrishna/scala-sbt-template/releases/latest)
 ---
 
 ### Project Template Facilitates
