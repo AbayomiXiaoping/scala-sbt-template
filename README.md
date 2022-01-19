@@ -15,6 +15,7 @@ Scala SBT template
 - [x] Sbt Scala Format Plugin Configuration.
 - [x] Sbt Jacoco Plugin Configuration.
 - [x] Sbt Custom Publish Configuration.
+- [x] Sbt Git Metadata Generate and Publish Configuration.
 - [ ] Sbt SonarQube Plugin Configuration.
 - [ ] Sbt Release Plugin Configuration.
 
