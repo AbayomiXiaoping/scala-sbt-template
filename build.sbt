@@ -19,12 +19,13 @@ lazy val overwriteArtifact: Boolean =
  */
 organization := "com.github.suriyakrishna"
 name := "scala-sbt-template"
-version := "1.0.0.RELEASE"
+version := "1.0.0"
 scalaVersion := "2.11.12"
 maintainer := "suriya.kishan@live.com"
 packageSummary := "Scala SBT Template"
 packageDescription :=
-  """Scala SBT Template"""
+  """This repository provides files, directories, and build configuration for a Scala SBT project that can be completely 
+    |inferred to create a new Scala SBT project with minimal changes.""".stripMargin
 
 homepage := Some(url("https://github.com/suriyakrishna/scala-sbt-template"))
 licenses := Seq(
