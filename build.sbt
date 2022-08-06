@@ -19,7 +19,7 @@ lazy val overwriteArtifact: Boolean =
  */
 organization := "com.github.suriyakrishna"
 name := "scala-sbt-template"
-version := "1.0.0"
+version := "1.1.0"
 scalaVersion := "2.11.12"
 maintainer := "suriya.kishan@live.com"
 packageSummary := "Scala SBT Template"
