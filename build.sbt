@@ -21,13 +21,13 @@ organization := "com.github.suriyakrishna"
 name := "scala-sbt-template"
 version := "1.0.0"
 scalaVersion := "2.11.12"
-maintainer := "suriya.kishan@live.com"
+maintainer := "personal"
 packageSummary := "Scala SBT Template"
 packageDescription :=
   """This repository provides files, directories, and build configuration for a Scala SBT project that can be completely 
     |inferred to create a new Scala SBT project with minimal changes.""".stripMargin
 
-homepage := Some(url("https://github.com/suriyakrishna/scala-sbt-template"))
+homepage := Some(url("https://github.com/AbayomiXiaoping/scala-sbt-template"))
 licenses := Seq(
   "GNU-gpl-3.0" -> url("https://www.gnu.org/licenses/gpl-3.0.en.html")
 )
